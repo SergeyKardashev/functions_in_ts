@@ -37,3 +37,19 @@ function greeting(name: string, age?: number, city: string = "Unknown") {
 function collectNames(...names: string[]) {
   return names.join(", ");
 }
+
+// в ts можно использовать rest-параметр не на последнем месте, если после него идут tuple types (кортежи). 
+type TailParams = [number, boolean];
+
+function exampleFunction(...args: [string, ...TailParams]) {
+  const [first, second, third] = args;
+  console.log(first); // string
+  console.log(second); // number
+  console.log(third); // boolean
+}
+
+exampleFunction("Hello", 42, true); // корректный вызов
+exampleFunction("Hello", 42); // Ошибка: недостаточно аргументов
+exampleFunction("Hello", 42, true, "extra"); // Ошибка: слишком много аргументов
+// rest-параметр args описан как кортеж [string, ...TailParams]. 
+// Значит args должен начинаться со строки, а затем следовать кортеж TailParams (из числа и буля) 
