@@ -33,3 +33,7 @@ function greeting(name: string, age?: number, city: string = "Unknown") {
 }
 
 
+// Rest параметры позволяют функции принимать произвольное количество аргументов в виде массива
+function collectNames(...names: string[]) {
+  return names.join(", ");
+}
