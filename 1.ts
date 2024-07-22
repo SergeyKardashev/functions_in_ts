@@ -1,5 +1,5 @@
 // Именованная функция
-function add(x: number, y: number): number {
+function add1(x: number, y: number): number {
   return x + y;
 }
 
@@ -91,3 +91,17 @@ function sum(a, b) {
 }
 sum(1, 2); // 'this, a, b = [object global], 1, 2'
 sum.call(0, 1, 2) // 'this, a, b = 0, 1, 2'
+
+
+// Перегрузка функций
+// Одна функция может иметь несколько возможных сигнатур входных и выходных типов
+function add(a:string, b:string): string;
+function add(a:number, b:number): number;
+function add(a: any, b: any): any {
+    if (typeof a === 'string' && typeof b === 'string') {
+        return a.concat(' ',b);
+    }
+    if (typeof a === 'number' && typeof b === 'number') {
+        return a + b;
+    }
+}
