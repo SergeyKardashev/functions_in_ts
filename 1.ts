@@ -49,13 +49,45 @@ function exampleFunction(...args: [string, ...TailParams]) {
 }
 
 exampleFunction("Hello", 42, true); // корректный вызов
-exampleFunction("Hello", 42); // Ошибка: недостаточно аргументов
-exampleFunction("Hello", 42, true, "extra"); // Ошибка: слишком много аргументов
+// exampleFunction("Hello", 42); // Ошибка: недостаточно аргументов
+// exampleFunction("Hello", 42, true, "extra"); // Ошибка: слишком много аргументов
 // rest-параметр args описан как кортеж [string, ...TailParams]. 
 // Значит args должен начинаться со строки, а затем следовать кортеж TailParams (из числа и буля) 
 
 
-// Методы call, apply и bind
-// call чтоб вызвать функцию с указанным контекстом и аргументами через запятую
-// apply как call, но аргументы передаются в виде массива. Когда не знаешь сколько из будет.
-// bind возвращает новую функцию, которая когда бы её не вызвали, будет иметь указанный контекст
+// Методы call, apply и bind.
+// - call чтоб вызвать функцию с указанным контекстом и аргументами через запятую
+// - apply как call, но аргументы передаются в виде массива. Когда не знаешь сколько из будет.
+// - bind возвращает новую функцию, которая когда бы её не вызвали, будет иметь указанный контекст
+
+
+// Функции-генераторы чтобы создавать итерируемые функции
+// Про генераторы в js https://learn.javascript.ru/generators
+function* numberGenerator(): Generator<number> {
+  let i = 0;
+  while (true) {
+    yield i++;
+  }
+}
+const gen = numberGenerator();
+
+console.log(gen.next().value);  // 0
+console.log(gen.next().value);  // 1
+console.log(gen.next().value);  // 2
+
+
+// Типизация this чтоб явно указать тип для 'this' внутри функции
+function multiplyByTwo(this: number): number {
+    return this * 2;
+}
+// Метод call установит значение this в ПЕРВОМ аргументе
+console.log(multiplyByTwo.call(10)); // 20
+const doubleDozen = multiplyByTwo.call(12);
+console.log(doubleDozen);
+
+// На чистом js
+function sum(a, b) {
+  return `this, a, b = ${this}, ${a}, ${b}`;  
+}
+sum(1, 2); // 'this, a, b = [object global], 1, 2'
+sum.call(0, 1, 2) // 'this, a, b = 0, 1, 2'
